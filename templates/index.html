@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aktien Vergleich</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Aktien Vergleich</h1>
+        <div class="text-container">
+            <p>Willkommen beim Aktien Vergleich</p>
+            <p>Gib zunächst in die Suchleisten die beiden zu vergleichenden Aktien ein</p>
+            <p>Dabei kannst du sowohl nach dem Namen als auch nach dem Kürzel der Aktie suchen</p>
+            <p>Sind die gewünschten Aktien ausgewählt, drücke den "Vergleichen" Button</p>
+        </div>
+        <form id="compare-form">
+            <input type="text" id="symbol1" name="symbol1" placeholder="Geben sie die 1. Vergleichsaktie ein">
+            <input type="text" id="symbol2" name="symbol2" placeholder="Geben sie die 2. Vergleichsaktie ein">
+            <button type="submit">Vergleichen</button>
+        </form>
+        <div id="plot"></div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#compare-form').on('submit', function(event) {
+                event.preventDefault();
+                var symbol1 = $('#symbol1').val();
+                var symbol2 = $('#symbol2').val();
+                
+                $.post('/compare', {symbol1: symbol1, symbol2: symbol2}, function(data) {
+                    var plot_data = JSON.parse(data);
+                    Plotly.newPlot('plot', plot_data.data, plot_data.layout);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
