@@ -5,9 +5,10 @@ import plotly.express as px
 import plotly.io as pio
 import requests
 import logging
+import config
 
 app = Flask(__name__)
-API_KEY = "6205859ea1cd82.12555535"
+API_KEY = config.EODHD_API_KEY
 
 # Protokollierung konfigurieren
 logging.basicConfig(level=logging.INFO)
